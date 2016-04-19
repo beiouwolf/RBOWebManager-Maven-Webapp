@@ -1,0 +1,83 @@
+body{
+padding:0px; margin:0px; height:100%;
+padding-top: 60px;
+font-family: 'Microsoft Yahei','Arial','Helvetica Neue','sans-serif';'
+}
+
+.div-center {
+	margin:0 auto;
+}
+
+/* header nav */
+.navbar { background-color:#ff7200}
+.navbar a {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-transition: opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition: opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.navbar a:HOVER {
+	opacity: 0.65;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
+	filter: alpha(opacity = 65);
+	color:#000;
+}
+.navbar-brand {
+	color:#fff;
+}
+
+.dropdown-menu{
+	background-color: #ff7200
+}
+.header-nav-login-toggle {
+	float: none;
+	position: absolute;
+	top: -3px;
+	right: 5em;
+	background: url("../images/log-off.png") no-repeat center;
+	background-size: 1.5em auto;
+}
+
+.header-nav-login {
+	background: url("../images/log-off.png") no-repeat center;
+	background-size: 1.5em auto;
+}
+
+.header-nav-inner-arrow {
+	color:#fff;
+}
+.header-nav-inner-name {
+	position: absolute;
+	top: -3px;
+	left: 50%;
+	margin-left: -15%;
+	color:#fff;
+	font-size: 1.3em;
+}
+.bs-navbar-collapse ul li {
+	min-width:150px;
+	text-align: center;
+}
+.bs-navbar-collapse ul li a{
+	color:#fff;
+	font-size: 1.3em;
+}
+
+.icon-bar {
+	background-color:#fff;
+}
+
+/* footer */
+.footer {
+	font-size:0.8em;
+	color:#888;
+	padding-left: 1em;
+}
+
+/* 图片轮播 */
+.bannar{
+	background-repeat:no-repeat;
+	background-position:center;
+	background-size: 30em auto;
+	width:100%;
+	min-height:30em;
+}

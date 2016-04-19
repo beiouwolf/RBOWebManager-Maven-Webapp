@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<#include "../pageCommon.html">
+
+<html>
+<@head >
+</@head>
+  
+  <body>
+    <@nav/>
+    <#assign ATTR = {"LightAttack":"光线攻击", "WrestleAttack":"格斗攻击", "BallAttack":"实弹攻击","MagicAttack":"魔法攻击","HyperspaceAttack":"空间攻击"}>
+    
+    <div class="container-fluid">
+    	<!-- FORM -->
+    		<div class="row">
+    			<div class="col-md-10 col-md-offset-1">
+    				<form method="post">
+    					<input type="hidden" name="where" id="where" />
+	    				<div class="btn-group" role="group">
+						  <button type="button" class="btn btn-default btn_where" data-where="cast(hp as int) < 15000">HP 15000 以下</button>
+						  <button type="button" class="btn btn-default btn_where" data-where="cast(hp as int) between 15000 and 20000">HP 15000 - 20000</button>
+						  <button type="button" class="btn btn-default btn_where" data-where="cast(hp as int) between 20000 and 30000">HP 20000 - 30000</button>
+						  <button type="button" class="btn btn-default btn_where" data-where="cast(hp as int) > 30000">HP 30000 以上</button>
+						</div>
+    				</form>
+    			</div>
+    		</div>
+    		<br/>
+    		<#if list??>
+    		<#list list as robot>
+    		<#if robot?? && robot.hp??>
+    		
+    		<#if robot_index%6==0>
+    		<div class="row">
+    		</#if>
+	  		<div class="col-md-2">
+	  			<table class="table">
+	  				<tbody>
+	  					<tr><td colspan="2">${robot.name}</td></tr>
+	  					<tr><td colspan="2"><img src="${base}/common/images/bimg/${robot.image!''}.gif" class="img-responsive center-block"></td></tr>
+	  					<tr><td>HP</td><td>${robot.hp}</td></tr>
+	  					<tr><td>EN</td><td>${robot.en}</td></tr>
+	  					<tr><td>地形</td><td></td></tr>
+	  					<tr><td>移动力</td><td>${robot.move}</td></tr>
+	  					<tr><td>速度</td><td>${robot.speed}</td></tr>
+	  					<tr><td>运动性</td><td>${robot.evade}</td></tr>
+	  					<tr><td>芯片槽</td><td>${robot.equip}</td></tr>
+	  					<tr><td colspan="2"></td></tr>
+	  					<#if robot.weapons??>
+	  					<tr><td colspan="2">武器:</td></tr>
+	  					<#list robot.weapons as w>
+	  					<tr><td colspan="2">&nbsp;${w.name}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;伤害</td><td>${w.power}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;命中</td><td>${w.def}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;消耗</td><td><#if w.en=="A">弹(${w.ammo})<#else>${w.en}</#if></td></tr>
+	  					<tr><td>&nbsp;&nbsp;距离</td><td>${w.space}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;暴击</td><td>${w.crtical}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;影响移动</td><td>${w.speed1}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;武器速度</td><td>${w.speed2}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;适性</td><td>${w.land!""}</td></tr>
+	  					<tr><td>&nbsp;&nbsp;属性</td><td>${ATTR[w.attr]!w.attr}</td></tr>
+	  					</#list>
+	  					</#if>
+	  					<tr><td>光线防御</td><td>${robot.glight}</td></tr>
+	  					<tr><td>实弹防御</td><td>${robot.gball}</td></tr>
+	  					<tr><td>格斗防御</td><td>${robot.gwrestle}</td></tr>
+	  					<tr><td>魔法抗力</td><td>${robot.gmagic}</td></tr>
+	  					<tr><td>空间抵御</td><td>${robot.ghyper}</td></tr>
+	  					<tr><td>HP修复</td><td>${robot.hprestore}</td></tr>
+	  					<tr><td>EN修复</td><td>${robot.enrestore}</td></tr>
+	  					<tr><td colspan="2"></td></tr>
+	  					<tr><td colspan="2">${robot.sheildname!""}</td></tr>
+	  				</tbody>
+	  			</table>
+	  		</div>
+
+	  		<#if robot_index%6==5>
+    		</div><hr /><br/>
+    		</#if>
+    		
+	  		</#if>
+	  		</#list>
+	  		</#if>
+ 		</div>
+   </body>
+   
+   <script>
+   	$(document).ready(function() {
+   		$(".btn_where").on("click",function() {
+   			$("#where").val($(this).attr("data-where"));
+   			$("form").submit();
+   		});
+   	});
+   </script>
+</html>

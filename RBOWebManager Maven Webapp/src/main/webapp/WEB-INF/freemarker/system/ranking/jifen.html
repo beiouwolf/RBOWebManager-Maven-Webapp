@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<#include "../../pageCommon.html">
+
+<html>
+<@head >
+<style>
+.flag {
+	min-width:4em;
+	text-align: center;
+}
+.flag img {
+	max-width:4em;
+}
+
+.list-group-item {
+	line-height:6em;
+}
+
+h1 {
+    font-family:"微软雅黑" , helvetica, arial;
+    -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), color-stop(50%, rgba(0,0,0,.5)), to(rgba(0,0,0,1)));
+}
+     
+</style>
+</@head>
+
+  <body>
+    <@nav/>
+    
+    <div class="container">
+    	<blockquote><p>数据采集时间 : <em>${created_timestamp}</em><p></blockquote>
+    	<!-- FORM -->
+    	<div class="row">
+	  		<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-1">
+	  			<ul class="list-group">
+	  				<#list ranking as item>
+	  					<#if item??>
+	  					<li class="list-group-item">
+	  						<div class="media">
+		  						<div class="media-left flag"><#if item_index lt 3><img src="../../common/images/flag${item_index+1}.png" /><#else><span class="badge">${item_index+1}</span></#if></div>
+		  						<div class="media-body"><h1>${item.player}</h1></div>
+		  						<div class="media-right"><h1>${item.jifen}</h1></div>
+		  					</div>
+	  					</li>
+	  					</#if>
+	  				</#list>
+				</ul>
+	  		</div>
+ 		</div>
+    </div>
+   </body>
+</html>

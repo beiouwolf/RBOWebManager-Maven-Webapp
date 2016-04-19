@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mybatis-3-mapper" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.allen.rbo.dao.StorageMapper">
+	<insert id="insert">
+		insert into ROBOTSSTORAGE ( Username,robot,HPEN,Weaponpower,HpEnGuard,Eqip )
+		values(#{Username},#{robot},#{HPEN},#{Weaponpower},#{HpEnGuard},#{Eqip})
+	</insert>
+	
+	<select id="select" resultType="map">
+		select id,robot from ROBOTSSTORAGE where Username=#{Username} order by id
+	</select>
+	
+	<select id="selectOne" resultType="map">
+		select * from ROBOTSSTORAGE where id=#{id} and Username=#{Username}
+	</select>
+	
+	<delete id="delete">
+		delete from ROBOTSSTORAGE where id=#{id} and Username=#{Username}
+	</delete>
+
+	<select id="selectRobot" resultType="string">
+		select robot from ROBOTSSTORAGE
+	</select>
+</mapper>
+

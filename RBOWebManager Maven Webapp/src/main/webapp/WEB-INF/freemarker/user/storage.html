@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<#include "../pageCommon.html">
+
+<html>
+<#setting url_escaping_charset="UTF-8">
+<@head >
+<style>
+.robotListItem {
+	padding-left:120px;
+	
+	background-size:100px auto;
+	background-position: 10px center;
+	background-repeat: no-repeat;
+	
+	height:120px;
+}
+
+.st_robotListItem {
+	padding-left:120px;
+	
+	background-size:100px auto;
+	background-position: 10px center;
+	background-repeat: no-repeat;
+	
+	height:120px;
+}
+</style>
+</@head>
+  
+  <body>
+    <@nav/>
+    
+    <div class="container">
+    	<#if error??>
+    		<div class="alert alert-danger alert-dismissible fade in" role="alert">
+		      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		      <h4>Oh snap! 请求错误</h4>
+		      <p>${error}</p>
+		      <div class="row">
+		      	<div class="col-md-4 col-md-offset-4 col-xs-12">
+		        <a type="button" class="btn btn-danger btn-block" href="javascript:location.reload()">刷新页面</a>
+		      </div>
+		    </div>
+		<#else>
+    	<section class="panel panel-default" id="choosePanel">
+    		<header class="panel-heading">
+                机体仓库
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                	<div class="col-md-2 col-md-offset-2 col-xs-12">
+                		<button type="button" class="btn btn-primary btn-block choose" data-for="inPanel">存放机体</button>
+                	</div>
+                	<div class="col-md-2 col-md-offset-3 col-xs-12">
+                		<button type="button" class="btn btn-danger btn-block choose" data-for="outPanel">取出机体</button>
+                	</div>
+                </div>
+            </div>
+    	</section>
+    	
+    	<!-- 存放 -->
+    	<section class="panel panel-default" id="inPanel" style="display:none;">
+    		<header class="panel-heading">
+                存放机体
+            </header>
+				<div class="list-group">
+					<#macro rImage img>${img?url}</#macro>
+					<#list robots as robot>
+						<#if robot.Name??>
+							<a href="#" class="list-group-item robotListItem <#if NowRobot==robot_index+1>disabled</#if>" style="background-image:url('${base}/system/bimg/<@rImage robot.Image.value/>')" data-index="${robot_index}">
+								<span class="badge">${robot_index + 1}</span>
+								<h4 class="list-group-item-heading">${robot.Name.value}</h4>
+		    					<p class="list-group-item-text">
+		    						HP:${robot.HP.value}<br/>
+		    						EN:${robot.EN.value}<br/>
+		    						已装备芯片:${eqsSize[robot_index]}
+		    					</p>
+		    				</a>
+						<#else>
+							<a href="#" class="list-group-item robotListItem" data-index="-1">
+								<span class="badge">${robot_index + 1}</span>
+								<h4 class="list-group-item-heading">空机位</h4>
+		    					<p class="list-group-item-text">
+		    					</p>
+		    				</a>
+	    				</#if>
+    				</#list>
+				</div>
+    	</section>
+    	
+    	
+    	<!-- 取出 -->
+    	<div id="outPanel" style="display:none;">
+			<!-- 机位选择 -->
+			<section class="panel panel-default">
+				<header class="panel-heading"> 空余机位 </header>
+				<div class="panel-body" style="text-align: center;">
+					<div class="btn-group" data-toggle="buttons">
+						<#assign firstFlag=true>
+						<#list robots as robot> 
+						<#if robot.Name??> 
+						<#else> 
+						<label class="btn btn-default <#if NowRobot==robot_index+1>disabled<#elseif firstFlag>active</#if>"> 
+						<input type="radio" name="freePos" id="freePos" value="${robot_index + 1}" autocomplete="off" <#if firstFlag>checked="checked"<#assign firstFlag=false></#if> />机 位 ${robot_index + 1}
+						</label> 
+						</#if> 
+						</#list>
+					</div>
+				</div>
+			</section>
+	
+				<!-- 仓库机体 -->
+			<section class="panel panel-default">
+				<header class="panel-heading">目前仓库机体</header>
+				<div class="list-group">
+					<#list st_robots?keys as key>
+						<#assign id=key robot=st_robots[key]>
+						<a href="#" class="list-group-item st_robotListItem" style="background-image:url('${base}/system/bimg/<@rImage robot.Image.value/>')" data-id="${id}">
+							<h4 class="list-group-item-heading">${robot.Name.value}</h4>
+	    				</a>
+	   				</#list>
+				</div>
+	    	</section>
+    	</div>
+    	
+    	</#if>
+    </div>
+    
+    
+    <!-- Modal -->
+	<div class="modal fade" id="inModal" tabindex="-1" role="dialog" aria-labelledby="inModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">确认</h4>
+	      </div>
+	      <div class="modal-body">
+	        <span id="inModel_index"></span>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <a type="button" class="btn btn-primary" href="#" id="inModel_href">继续</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    <script>
+    $(document).ready(function() {
+    	$(".choose").on('click',function() {
+    		var p = $(this).attr('data-for');
+    		$('#choosePanel').fadeOut('slow',function() {
+    			$('#' + p).show();
+    		});
+    	});
+    	
+    	$('.robotListItem').on('click',function() {
+    		var index = $(this).attr('data-index');
+    		if(index == -1)
+    			return;
+    		if($(this).hasClass('disabled'))
+    			return;
+    		index = parseInt(index);
+    		$('#inModel_index').text("确定存入 第 " + (index + 1) + " 机位的机体?");
+    		$('#inModel_href').attr('href','store/' + index + '?_tmp=' + Math.random());
+    		$('#inModal').modal();
+    	});
+
+    	$('.st_robotListItem').on('click',function() {
+    		var freePos = $('#freePos:checked').val();
+			if(!freePos)
+				return;
+			if(freePos == ${NowRobot})
+				return;
+			
+    		var id = $(this).attr('data-id');
+    		id = parseInt(id);
+    		$('#inModel_index').text("确定取出机体到 第 " + (freePos) + " 机位?");
+    		$('#inModel_href').attr('href','recall/' + id + '/' + freePos + '?_tmp=' + Math.random());
+    		$('#inModal').modal();
+    	});
+
+    });
+    </script>
+   </body>
+</html>

@@ -1,0 +1,78 @@
+<#-- 定义项目路径-->
+<#assign base="/rbo">
+
+<#-- header -->
+<#macro head>
+<head>
+<title>RBO Support Website</title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta charset="utf-8"> 
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="-1"/>
+<!-- bootstrap -->
+<link rel="stylesheet" href="${base}/common/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base}/common/css/site.css">
+<!-- jquery -->
+<script src="${base}/common/script/jquery.10.min.js"></script>
+<script src="${base}/common/bootstrap/js/bootstrap.min.js"></script>
+
+<#nested>
+</head>
+</#macro>
+
+<#-- nav -->
+<#macro nav>
+<header class="navbar navbar-fixed-top bs-docs-nav" id="top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="${base}/index.html" class="navbar-brand">RBO Support Website</a>
+    </div>
+    
+    
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+      	<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">统计系统 <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="${base}/system/counts/item">道具统计</a></li>
+            <li><a href="${base}/system/counts/card">卡片统计</a></li>
+            <li><a href="${base}/system/counts/robot">机体统计</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">排行榜 <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="${base}/system/ranking/jifen">积分排行榜</a></li>
+            <li><a href="${base}/system/ranking/rongyu">荣誉排行榜</a></li>
+            <li><a href="${base}/system/ranking/shengwang">声望排行榜</a></li>
+            <li><a href="${base}/system/ranking/money">金钱排行榜</a></li>
+            <li><a href="${base}/system/ranking/kill">击坠排行榜</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="${base}/sec/storage/storage?_tmp=${.now?string('yyyyMMddHHmmssS')}">机体仓库</a>
+        </li>
+        <li>
+          <a href="${base}/user/hero">英雄榜</a>
+        </li>
+        
+      </ul>
+ 
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+        	<a href="${base}/sec/anonymous/j_spring_security_logout" class="header-nav-login">&nbsp;</a>
+        </li>
+      </ul>
+
+    </nav>
+    
+  </div>
+</header>
+</#macro>
+

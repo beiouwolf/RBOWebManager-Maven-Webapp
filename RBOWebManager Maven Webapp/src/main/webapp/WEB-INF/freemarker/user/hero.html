@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<#include "../pageCommon.html">
+
+<html>
+<link rel="stylesheet" href="${base}/common/css/idangerous.swiper.min.css">
+<@head >
+<style>
+.player-robot-img {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 90%;
+	min-height: 8em;
+}
+.robot-img {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 90%;
+	
+	border:1ps solid #fff;
+}
+
+.line-row {
+	overflow: hidden;
+	height: 2em;
+	line-height: 2em;
+	color: #999;
+}
+
+.device {
+	width: 95%;
+	position: relative;
+	margin: 10px auto;
+	height: 24em;
+	padding: 30px 40px;
+	border-radius: 20px;
+	background: #333;
+	border: 3px solid #fff;
+	box-shadow: 0px 0px 5px #000;
+}
+
+.swiper-container {
+	width: 100%;
+	height: 100%;
+	color: #fff;
+	background: #222;
+	text-align: center;
+}
+
+.swiper-slide {
+	height: 100%;
+	opacity: 0.4;
+	-webkit-transition: 300ms;
+	-moz-transition: 300ms;
+	-ms-transition: 300ms;
+	-o-transition: 300ms;
+	transition: 300ms;
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+}
+
+.swiper-slide-visible {
+	opacity: 0.5;
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+}
+
+.swiper-slide-active {
+	top: 0;
+	opacity: 1;
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+}
+
+.swiper-slide .title {
+	font-style: italic;
+	font-size: 42px;
+	margin-bottom: 0;
+	line-height: 45px;
+}
+
+.pagination {
+	position: absolute;
+	z-index: 20;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	bottom: 5px;
+}
+
+.swiper-pagination-switch {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 8px;
+	background: #aaa;
+	margin-right: 8px;
+	cursor: pointer;
+	-webkit-transition: 300ms;
+	-moz-transition: 300ms;
+	-ms-transition: 300ms;
+	-o-transition: 300ms;
+	transition: 300ms;
+	opacity: 0;
+	position: relative;
+	top: -50px;
+}
+
+.swiper-visible-switch {
+	opacity: 1;
+	top: 0;
+	background: #aaa;
+}
+
+.swiper-active-switch {
+	background: #fff;
+}
+</style>
+</@head>
+  
+  <body>
+    <@nav/>
+    
+    <div class="container">
+    	<!-- FORM -->
+    	<div class="row">
+  		<div class="col-xs-12 col-sm-12 col-md-12">
+  			<form class="form" method="post">
+				<fieldset>
+					<div>
+					<legend>Tips</legend>
+					<label>页面采用HTML5 推荐使用 IE9+ / FF4+ / CHROME</label>
+					<label>不支持模糊查询</label>
+					</div>
+		            <div class="form-group">
+					    <label class="sr-only" for="name">name</label>
+					    <input type="text" class="form-control" id="name" name="name" placeholder="输入搜索的人物名" value='${name!""}'/>
+					  </div>
+					  <div class="row">
+					  	<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+					  		<button type="submit" class="btn btn-info btn-block">查找英雄榜</button>
+					  	</div>
+					  </div>
+				</fieldset>
+			</form>
+  		</div>
+  		
+  		<!-- ALERT -->
+  		<#if alert??>
+  			<div class="col-xs-12 col-sm-12 col-md-12">&nbsp;</div>
+	  		<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="alert alert-warning">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<p>${alert}</p>
+				</div>
+			</div>
+		</#if>
+		
+		<!-- MAIN -->
+		<#if save??>
+			<#-- variable -->
+			<#assign nowRobot = robotImage(save) />
+			<#assign Character = {"Cold" : "冷静", "Hot" : "热血"} />
+			<#assign AttackSkillMaster = {"LightAttackMaster" : "光学大师", "BallAttackMaster" : "弹药专家", "WrestleAttackMaster":"格斗宗师", "HyperspaceAttackMaster":"空间掌控者", "MagicAttackMaster":"魔法驾驭者"} />
+			<#assign Pray = {"0":"Normal","1":"Strengthen", "2":"Transformation", "3":"SendOut", "4":"Show", "5":"Operate"} />
+			<#assign PrayName = {"Strengthen" : "格斗家", "Transformation" : "魔法师", "SendOut":"枪手", "Show":"", "Operate":"跳跃者"} />
+			
+			<#macro rImage img>${img?replace(".rpc",".gif")}</#macro>
+			
+			<#macro line key value xs1=4 xs2=8 sm1=3 sm2=3 md1=2 md2=2>
+				<div class="col-xs-${xs1} col-sm-${sm1} col-md-${md1}">
+    				${key}
+    			</div>
+    			<div class="col-xs-${xs2} col-sm-${sm2} col-md-${md2} line-row" >
+    				${value}
+    			</div>
+			</#macro>
+			
+			<#macro skill key value max=1000>
+				<div class="col-xs-4 col-sm-3 col-md-1">
+				    ${key}
+				</div>
+				<div class="col-xs-8 col-sm-9 col-md-5">
+			    	<div class="progress">
+			    		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="${value}" aria-valuemin="0" aria-valuemax="${max}" style="width:${value?eval/max*100}%;">
+			    			${value?eval/10}
+			    		</div>
+			    	</div>
+		    	</div>
+			</#macro>
+			
+			<#macro mission title text value success>
+				<li class="list-group-item">
+				  	<span class="badge"><span class="glyphicon glyphicon-<#if save[value]?? && save[value].value ==success >ok<#else>remove</#if>"></span></span>
+				    <h4 class="list-group-item-heading">${title}</h4>
+				    <p class="list-group-item-text">${text}</p>
+				  </li>
+			</#macro>
+			
+  			<div class="col-xs-12 col-sm-12 col-md-12">&nbsp;</div>
+  			
+	    	<div class="col-xs-12 col-sm-12 col-md-12">
+	    		<div class="btn-group btn-group-justified" data-toggle="buttons">
+				  <label class="btn btn-default active page-tab">
+				    <input type="radio" name="options" value="info" autocomplete="off" checked>人物
+				  </label>
+				  <label class="btn btn-default page-tab">
+				    <input type="radio" name="options" value="license" autocomplete="off">驾照
+				  </label>
+				  <label class="btn btn-default page-tab">
+				    <input type="radio" name="options" value="mission" autocomplete="off">任务
+				  </label>
+				</div>
+	    	</div>
+	    	<div class="col-xs-12 col-sm-12 col-md-12">&nbsp;</div>
+				    
+	  		<div class="col-xs-12 col-sm-12 col-md-12">
+	  			<!-- player info -->
+				<div class="panel panel-default page-active" id="info">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">${name}</h3>
+				  </div>
+				  <div class="panel-body">
+				    <div class="row">
+				    	<div class="col-xs-6 col-sm-4 col-md-2 " >
+				    		<p class="player-robot-img" style="background-image : url('${base}/common/images/bimg/<@rImage nowRobot.Image.value/>');">
+								&nbsp;
+				    		</p>
+				    	</div>
+				    	<div class="col-xs-6 col-sm-8 col-md-10">
+				    		<div class="row">
+				    			<@line "<span class='glyphicon glyphicon-fire'></span>" Character[save.Character.value] />
+				    			<@line "<span class='glyphicon glyphicon-link'></span>" AttackSkillMaster[save.AttackSkillMaster.value] />
+				    			<@line "<span class='glyphicon glyphicon-screenshot'></span>" save.EnemyKills.value />
+				    		</div>
+				    		<div class="row">
+				    			<@line "机师 LV"+save.Level.value '<div class="progress"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="${save.Level.value}" aria-valuemin="0" aria-valuemax="105" style="width:${save.Level.value?eval/105*100}%;"></div></div>' 12 12 3 9 2 10/>
+				    			<#if save.Pray?? && (save.Pray.value != "0")>
+				    			<@line PrayName[Pray[save.Pray.value]]+" LV"+(save[Pray[save.Pray.value]].value?eval/100)?int '<div class="progress"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="${(save[Pray[save.Pray.value]].value?eval/100)?int}" aria-valuemin="0" aria-valuemax="10" style="width: ${(save[Pray[save.Pray.value]].value?eval/100)?int}0%"></div></div>' 12 12 3 9 2 10/>
+				    			</#if>
+				    			<#if save.BusinessPermission?? && save.BusinessPermission.value == "1">
+				    			<@line "<span class='glyphicon glyphicon-remove'></span>" "已被禁止交易" />
+				    			</#if>
+				    			<#if save.堕落?? && save.堕落.value == "True">
+				    			<@line "<span class='glyphicon glyphicon-warning-sign'></span>" "该玩家已选择堕落" />
+				    			</#if>
+				    		</div>
+				    	</div>
+				    </div>
+				    
+				    <div class="row">
+				    	<div class="col-xs-12 col-sm-12 col-md-12">
+				    		<hr/>
+				    	</div>
+				    </div>
+				    
+				    <div class="row">
+				    	<div class="col-xs-12 col-sm-12 col-md-12">
+				    		<@line "Money" save.Money.value 4 8 3 3 3 3/>
+			    			<@line "Exp" save.Exp.value 4 8 3 3 3 3/>
+			    			<@line "声望" save.ShengWang.value 4 8 3 3 3 3/>
+			    			<@line "荣誉" save.RongYu.value 4 8 3 3 3 3/>
+			    			<@line "基友" save.Wife.value 4 8 3 3 3 3/>
+			    			<@line "感情" save.Love.value 4 8 3 3 3 3/>
+			    			<@line "VIP积分" save.VIP_JiFen.value 4 8 3 3 3 3/>
+				    	</div>
+				    </div>
+				    
+				    <div class="row">
+				    	<div class="col-xs-12 col-sm-12 col-md-12">
+				    		<hr/>
+				    	</div>
+				    </div>
+				    
+				    <div class="row">
+				    	<@skill "光线" save.LightAttack.value />
+				    	<@skill "实弹" save.BallAttack.value />
+				    	<@skill "格斗" save.WrestleAttack.value />
+				    	<@skill "魔法" save.MagicAttack.value />
+				    	<@skill "空间" save.HyperspaceAttack.value />
+				    	
+				    	<@skill "防御" save.Resisting.value />
+				    	<@skill "回避" save.Dodge.value />
+				    	<@skill "知识" save.MachineLearning.value 2000/>
+				    	<@skill "修理" save.MachineRepairs.value 1000/>
+				    	<@skill "制造" save.MachineBuilding.value 5500/>
+				    </div>
+				    
+				  </div>
+				</div>
+				
+				<!-- license -->
+				<div class="panel panel-default" id="license">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">机体驾照</h3>
+				  </div>
+				  <div class="panel-body">
+				    <div class="row">
+				    	<div class="col-xs-12 col-sm-12 col-md-12" >
+				    		<div class="device">
+								<div class="swiper-container">
+									<div class="swiper-wrapper">
+									<#list robotLicenses(save) as robot>
+										<div class="swiper-slide robot-img" style="background-image:url('${base}/common/images/bimg/<@rImage robot.Image.value/>')">
+										${robot.Name.value}
+										</div>
+									</#list>
+									</div>
+								</div>
+								</div>
+							</div>
+				    	</div>
+				    </div>
+				  </div>
+				  
+				  <!-- mission -->
+				<div class="panel panel-default" id="mission">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">任务完成情况</h3>
+				  </div>
+				  <div class="panel-body">
+				    <div class="row">
+				    	<div class="col-xs-12 col-sm-12 col-md-12" >
+				    		<ul class="list-group">
+				    		<@mission "绝对正义" "弓天,维萨卡" "jueduizhengyi" "2"/>
+				    		<@mission "寻找铁球" "铁球大叔（贝米多巴)" "tieqiudashu" "1"/>
+				    		<@mission "击退次元兽" "金发女骑士(王子任务 前置)" "jurujiejie" "2"/> 
+				    		<@mission "破界之王" "黑骑士/枪骑士/格斗牛角 /破界勋章" "yiqichengshi_wangzi" "3"/>
+				    		<@mission "导演的骗局" "修罗屋/节子" "SRW_Z_renwu" "2"/> 
+							<@mission "隆盛的烦恼" "真SRX" "zhen_srx" "4"/>
+							<@mission "峡谷的呼唤" "黄金G8" "gold_G8" "5"/> 
+							<@mission "邪之男子" "Z2黑山羊" "z2boss_1" "2"/> 
+							<@mission "精灵的呼唤" "风魔-赛菲斯觉醒" "saifeisi" "3"/> 
+							<@mission "EOT任务" "迪奥斯/灰羚羊/灰羚羊 MKII/巴兰/创世神" "Eot_renwu" "2"/> 
+							<@mission "总帅的馈赠" "比安任务前置完成/新 手扎古历史" "DC_renwu" "2"/> 
+							<@mission "不幸的人" "不幸亡灵黑天驾照" "buxingderen" "2"/> 
+							<@mission "巴鲁马帝国任务" "ディバリウム/ヴ ァイクラン/创世神" "baluma" "2"/>
+								</ul>
+							</div>
+				    	</div>
+				    </div>
+				  </div>
+				
+				
+				    
+			</div>
+		</#if>
+  	</div>
+  	
+  	
+    </div>
+    
+    <script>
+    	$(document).ready(function() {
+    		$('.page-tab').on('click',function() {
+    			var id = $(this).find('input').val();
+    			
+    			var ctrl = $('#' + id);
+    			if(ctrl.hasClass('page-active'))
+    				return;
+    			
+    			$('.page-active').addClass('hide').removeClass('page-active');
+    			ctrl.removeClass('hide').addClass('page-active');
+    		});
+    		
+    		
+    		$.getScript("${base}/common/script/idangerous.swiper.min.js",function() {
+    			var window_width = $(window).width();
+    			var per = window_width < 768 ? 1 : 3;
+    			var mySwiper = new Swiper('.swiper-container',{
+    			    //pagination: '.pagination',
+    			    paginationClickable: true,
+    			    centeredSlides: true,
+    			    slidesPerView: per,
+    			    watchActiveIndex: true
+    			  });
+    			
+    			$('#license').addClass('hide');
+    			$('#mission').addClass('hide');
+    		});
+    		
+    		
+    	});
+    </script>
+   </body>
+</html>

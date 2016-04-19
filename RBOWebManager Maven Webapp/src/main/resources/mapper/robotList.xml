@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mybatis-3-mapper" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.allen.rbo.dao.DataRobotMapper">
+	<insert id="insertRobot" parameterType="dataRobot">
+		insert into file_robot 
+		values(#{id},#{hp},#{en},#{ability1},#{ability2},#{ability3},#{ability4},
+		#{move},#{speed},#{evade},#{glight},#{gball},#{gwrestle},#{gmagic},#{ghyper},
+		#{equip},#{image},#{hprestore},#{enrestore},#{need},#{sheildname},#{name})
+	</insert>
+	
+	<insert id="insertRobotWeapon" parameterType="dataRobotWeapon">
+		insert into file_robot_weapon
+		values(#{name},#{power},#{def},#{en},#{space},#{crtical},#{speed1},#{speed2},
+		#{land},#{attr},#{ammo},#{robotid})
+	</insert>
+	
+	<select id="select" parameterType="dataRobot" resultMap="dataRobotRet">
+		select r.*,w.name wname,w.power,w.def,w.en wen,w.space,w.crtical,w.speed1,w.speed2,w.land,w.attr,w.ammo 
+		from file_robot r inner join file_robot_weapon w on r.id=w.robotid 
+		<if test="where != null and where != ''">
+		where ${where}
+		</if>
+		order by id
+	</select>
+	
+	<resultMap id="dataRobotRet" type="dataRobot">
+        <id property="id" column="id"/>
+        <result property="hp" column="hp" />
+        <result property="en" column="en" />
+        <result property="name" column="name" />
+        <result property="ability1" column="ability1" />
+        <result property="ability2" column="ability2" />
+        <result property="ability3" column="ability3" />
+        <result property="ability4" column="ability4" />
+        <result property="move" column="move" />
+        <result property="speed" column="speed" />
+        <result property="evade" column="evade" />
+        <result property="glight" column="glight" />
+        <result property="gball" column="gball" />
+        <result property="gwrestle" column="gwrestle" />
+        <result property="gmagic" column="gmagic" />
+        <result property="ghyper" column="ghyper" />
+        <result property="equip" column="equip" />
+        <result property="image" column="image" />
+        <result property="hprestore" column="hprestore" />
+        <result property="enrestore" column="enrestore" />
+        <result property="need" column="need" />
+        <result property="sheildname" column="sheildname" />
+        <collection property="weapons" ofType="dataRobotWeapon">
+			<result property="name" column="wname"/>
+			<result property="power" column="power"/>
+			<result property="def" column="def"/>
+			<result property="en" column="wen"/>
+			<result property="space" column="space"/>
+			<result property="crtical" column="crtical"/>
+			<result property="speed1" column="speed1"/>
+			<result property="speed2" column="speed2"/>
+			<result property="land" column="land"/>
+			<result property="attr" column="attr"/>
+			<result property="ammo" column="ammo"/>
+		</collection>
+    </resultMap>
+		
+	<delete id="deleteRobot">
+		delete from file_robot
+	</delete>
+	
+	<delete id="deleteRobotWeapon">
+		delete from file_robot_weapon
+	</delete>
+
+</mapper>
+

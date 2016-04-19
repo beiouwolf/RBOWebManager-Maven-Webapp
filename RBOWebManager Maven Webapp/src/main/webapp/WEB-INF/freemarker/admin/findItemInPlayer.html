@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<#include "../adminCommon.html">
+
+<html>
+<link rel="stylesheet" href="${base}/common/css/idangerous.swiper.min.css">
+<@head >
+</@head>
+  
+  <body>
+    <@nav/>
+    
+    <div class="container">
+    	<!-- FORM -->
+    	<div class="row">
+	  		<div class="col-xs-12 col-sm-12 col-md-12">
+	  			<form class="form-inline" method="post">
+		            <div class="form-group">
+					    <label class="sr-only" for="itemid">itemid</label>
+					    <input type="text" class="form-control" id="itemid" name="itemid" placeholder="需要查找的道具编号" value='${itemid!""}'/>
+					  </div>
+			  		<button type="submit" class="btn btn-info">查找道具统计</button>
+				</form>
+	  		</div>
+	  	</div>
+	  	<br/>
+	  	
+		<!-- MAIN -->
+		<div class="container-fluid">
+			<div class="row">
+				<#if adminMap?? && adminMap?keys?size gt 0>
+					<div class="well">Admin权限统计
+						<div>拥有道具的玩家 : <#list normalMap?keys as key>${key} ,</#list></div>
+					</div>
+					<#list adminMap?keys as key>
+						<div class=" col-md-6">
+						<div class="panel panel-default">
+						  <!-- Default panel contents -->
+						  <div class="panel-heading">${key}</div>
+						
+						  <!-- Table -->
+						  <table class="table">
+						  	<thead><tr><td>数据项</td><td>位置</td></tr></thead>
+						  	<#list adminMap[key] as info>
+						    <tr>
+						    	<td>${info.name}</td><td>${info.index}</td>
+						    </tr>
+						    </#list>
+						  </table>
+						  
+						  <div class="panel-footer">道具数量 : ${adminMap[key]?size}</div>
+						</div>
+						</div>
+					</#list>
+				</#if>
+			</div>
+			
+			<div class="row">
+				<#if normalMap?? && normalMap?keys?size gt 0>
+					<div class="well">普通账号统计
+						<div>拥有道具的玩家 : <#list normalMap?keys as key>${key} ,</#list></div>
+					</div>
+					<#list normalMap?keys as key>
+						<div class=" col-md-6">
+						<div class="panel panel-default">
+						  <!-- Default panel contents -->
+						  <div class="panel-heading">${key}</div>
+						
+						  <!-- Table -->
+						  <table class="table">
+						  	<thead><tr><td>数据项</td><td>位置</td></tr></thead>
+						  	<#list normalMap[key] as info>
+						    <tr>
+						    	<td>${info.name}</td><td>${info.index}</td>
+						    </tr>
+						    </#list>
+						  </table>
+						  
+						  <div class="panel-footer">道具数量 : ${normalMap[key]?size}</div>
+						</div>
+						</div>
+					</#list>
+				</#if>
+			</div>
+		</div>
+		
+		
+		
+		
+  	</div>
+  	
+    
+    <script>
+    	$(document).ready(function() {
+    		
+    	});
+    </script>
+   </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<#include "../../pageCommon.html">
+
+<html>
+<@head >
+</@head>
+  
+  <body>
+    <@nav/>
+    
+    <div class="container">
+    	<blockquote><p>数据采集时间 : <em>${counts.created_timestamp}</em><p></blockquote>
+    	<!-- FORM -->
+    	<div class="row">
+	  		<div class="col-xs-12 col-sm-12 col-md-12">
+	  			<ul class="list-group">
+	  				<#list counts.list as item>
+	  					<#if item??>
+	  					<li class="list-group-item"><span class="badge">${item.counts}</span>[${item.id}] ${item.name}</li>
+	  					</#if>
+	  				</#list>
+				</ul>
+	  		</div>
+ 		</div>
+    </div>
+   </body>
+</html>
