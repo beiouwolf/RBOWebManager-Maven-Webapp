@@ -61,12 +61,19 @@
         <li>
           <a href="${base}/user/hero">英雄榜</a>
         </li>
+        <#if Session["login.adminip.valid"]??>
+        	<li><a href="${base}/sec/editor/editor.page">在线编辑器</a></li>
+        </#if>
         
       </ul>
  
       <ul class="nav navbar-nav navbar-right">
         <li>
+        	<#if Session["login.success"]??>
         	<a href="${base}/sec/anonymous/j_spring_security_logout" class="header-nav-login">&nbsp;</a>
+        	<#else>
+        	<a href="${base}/common/login.jsp" class="header-nav-login">&nbsp;</a>
+        	</#if>
         </li>
       </ul>
 

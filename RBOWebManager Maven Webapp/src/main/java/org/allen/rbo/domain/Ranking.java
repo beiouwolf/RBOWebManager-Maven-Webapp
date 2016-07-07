@@ -9,7 +9,7 @@ public class Ranking implements Serializable{
 	private int jifen;
 	private int shengwang;
 	private int rongyu;
-	private int money;
+	private long money;
 	private int kill;
 	public String getPlayer() {
 		return player;
@@ -35,10 +35,10 @@ public class Ranking implements Serializable{
 	public void setRongyu(int rongyu) {
 		this.rongyu = rongyu;
 	}
-	public int getMoney() {
+	public long getMoney() {
 		return money;
 	}
-	public void setMoney(int money) {
+	public void setMoney(long money) {
 		this.money = money;
 	}
 	public int getKill() {

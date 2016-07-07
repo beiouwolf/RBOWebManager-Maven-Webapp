@@ -51,7 +51,7 @@ public class IniDocument extends LinkedHashMap<String,IniLine> {
 	public boolean isTrue(String key) {
 		return "True".equals(getValue(key));
 	}
-
+	
 	public File getFile() {
 		return file;
 	}

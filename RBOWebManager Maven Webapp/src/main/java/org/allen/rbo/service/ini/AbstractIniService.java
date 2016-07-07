@@ -108,6 +108,18 @@ public abstract class AbstractIniService implements IniService,InitializingBean{
 				}
 		}
 	}
+	
+	// 读写文件系统
+	public String readContent(String name) throws FileNotFoundException {
+		File file = file(name);
+		
+		return iniRandomAccess.readContent(file);
+	}
+	public void writeContent(String name,String data) throws IOException {
+		File file = file(name);
+		
+		iniRandomAccess.writeContent(file,data);
+	}
 
 	public Directory getDirectoryEnum() {
 		return directoryEnum;

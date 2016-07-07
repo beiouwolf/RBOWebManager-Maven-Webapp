@@ -41,6 +41,7 @@ public abstract class AbstractCacheIniService extends AbstractIniService impleme
 		}
 	}
 	
+	
 	protected abstract int docFileSize();
 
 	private class FileStatus {

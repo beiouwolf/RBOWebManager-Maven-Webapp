@@ -19,19 +19,23 @@
 		<intercept-url pattern="/sec/user/anonymous/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/sec/user/**" access="ROLE_WEB" />
 		<intercept-url pattern="/sec/fee/**" access="ROLE_WEB" />
+		<intercept-url pattern="/sec/editor/**" access="ROLE_ADMINIP" />
 		<intercept-url pattern="/**"
 			access="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER" />
 
 
 		<form-login login-processing-url="/sec/anonymous/j_spring_security_check"
 			login-page="/common/login.jsp" 
-			authentication-failure-url="/common/login.jsp?error=true" />
+			default-target-url="/index.html"
+			authentication-failure-url="/common/login.jsp?error=true" 
+			authentication-success-handler-ref="loginSuccessHandler"/>
 		<logout logout-success-url="/index.html" logout-url="/sec/anonymous/j_spring_security_logout"/>
 		
 		<remember-me />
 	</http>
 
 	<beans:bean id="rboUserService" class="org.allen.rbo.service.LoginUserDetailService" />
+	<beans:bean id="loginSuccessHandler" class="org.allen.rbo.service.LoginUserAuthSuccessHandler" />
 	<authentication-manager erase-credentials="false">
 		<authentication-provider user-service-ref="rboUserService" />
 		 <!-- 

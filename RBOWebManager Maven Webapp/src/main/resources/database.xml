@@ -22,7 +22,7 @@
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
 		p:driverClassName="org.sqlite.JDBC"
-		p:url="jdbc:sqlite:E:\Workspace\RBOWebManager Maven Webapp\src\main\resources\rbo.db"  />
+		p:url="jdbc:sqlite:${catalina.base}\wtpwebapps\RBOWebManager Maven Webapp\WEB-INF\classes\rbo.db"  />
 		
 	<!-- 数据库选项 END -->
 	

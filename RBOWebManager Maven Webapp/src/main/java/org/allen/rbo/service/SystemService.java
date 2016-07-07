@@ -296,7 +296,7 @@ public class SystemService {
 			Ranking ranking = new Ranking();
 			ranking.setPlayer(playerName);
 			ranking.setJifen(toInt(jifen));
-			ranking.setMoney(toInt(money));
+			ranking.setMoney(toLong(money));
 			ranking.setRongyu(toInt(rongyu));
 			ranking.setShengwang(toInt(shengwang));
 			ranking.setKill(toInt(kill));
@@ -328,6 +328,13 @@ public class SystemService {
 	private int toInt(String value) {
 		try {
 			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+	private long toLong(String value) {
+		try {
+			return Long.parseLong(value);
 		} catch (NumberFormatException e) {
 			return 0;
 		}

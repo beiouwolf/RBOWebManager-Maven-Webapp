@@ -3,6 +3,10 @@ package org.allen.rbo.service;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.allen.rbo.service.ini.IniDocument;
 import org.allen.rbo.service.ini.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +16,16 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class LoginUserDetailService implements UserDetailsService{
 	@Autowired
 	private PlayerService playerService;
+	
+	@Resource
+	private List<String> iplist;
+	
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
@@ -46,6 +56,14 @@ public class LoginUserDetailService implements UserDetailsService{
 	   * @return
 	   */
 	  private User buildUserForAuthentication(String username,String password,List<GrantedAuthority> authorities){
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		
+		String ip = request.getRemoteAddr();
+		if(iplist.contains(ip)) {
+			request.getSession().setAttribute("login.adminip.valid", true);
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMINIP"));
+		}
+		
 	    return new User(username,password,true,true,true,true,authorities);
 	  }
 }

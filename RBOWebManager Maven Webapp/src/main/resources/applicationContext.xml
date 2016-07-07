@@ -21,5 +21,9 @@
 	<context:component-scan base-package="org.allen.rbo" />
 
 	<import resource="security.xml"/>
-	 
+	
+	<util:list id="iplist">
+		<value>127.0.0.1</value>
+		<value>0:0:0:0:0:0:0:1</value>
+	</util:list>
 </beans>

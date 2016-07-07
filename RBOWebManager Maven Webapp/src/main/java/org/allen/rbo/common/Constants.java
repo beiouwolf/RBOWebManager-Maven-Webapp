@@ -8,10 +8,12 @@ public class Constants {
 	
 	public enum Directory {
 		items("Items"),
+		npcs("Npcs"),
 		card("card"),
 		robot("Robot"),
 		player("save"),
-		map("map");
+		maps("Maps");
+		
 		public String val;
 		private Directory(String val) {
 			this.val = val;

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class IniRandomAccess implements InitializingBean{
 	private File BACKUP_DOC;
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		Resource resource = SpringUtil.getContext().getResource("classpath:/");
 		BACKUP_DOC = new File(resource.getFile(),"saveBak");
@@ -31,6 +32,12 @@ public class IniRandomAccess implements InitializingBean{
 	 
 	public IniDocument read(File file) throws FileNotFoundException {
 		return read(new FileInputStream(file),file);
+	}
+	public String readContent(File file) throws FileNotFoundException {
+		return readContent(new FileInputStream(file),file);
+	}
+	public void writeContent(File file,String data) throws IOException {
+		writeContent(new FileOutputStream(file),data);
 	}
 	
 	public void writer(File file,IniDocument doc) {
@@ -63,6 +70,49 @@ public class IniRandomAccess implements InitializingBean{
 			if(isreader != null)
 				try {
 					isreader.close();
+				} catch (IOException e) {
+				}
+		}
+	}
+	private String readContent(InputStream is,File file) {
+		InputStreamReader isreader = null;
+		BufferedReader reader;
+		
+		try {
+			isreader = new InputStreamReader(is,Constants.CHARSET);
+			reader = new BufferedReader(isreader);
+			
+			StringBuilder sb = new StringBuilder((int) file.length());
+			int size = 0;
+			char[] buf = new char[4096];
+			while((size = reader.read(buf)) != -1)
+				sb.append(buf,0,size);
+			
+			return sb.toString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(isreader != null)
+				try {
+					isreader.close();
+				} catch (IOException e) {
+				}
+		}
+	}
+	private void writeContent(OutputStream os,String data) throws IOException {
+		OutputStreamWriter oswriter = null;
+		BufferedWriter writer;
+		
+		try {
+			oswriter = new OutputStreamWriter(os,Constants.CHARSET);
+			writer = new BufferedWriter(oswriter);
+			
+			writer.write(data);
+			writer.close();
+		} finally {
+			if(oswriter != null)
+				try {
+					oswriter.close();
 				} catch (IOException e) {
 				}
 		}

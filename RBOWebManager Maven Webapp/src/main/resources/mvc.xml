@@ -42,6 +42,7 @@
 		<property name="messageConverters">
 			<util:list id="beanList">
 				<ref bean="mappingJacksonHttpMessageConverter" />
+				<ref bean="stringHttpMessageConverter"/>
 			</util:list>
 		</property>
 
@@ -54,6 +55,7 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="stringHttpMessageConverter" class="org.allen.rbo.service.spring.StringMessageConverter" />
 
 	<!-- 资源处理 -->
 	<mvc:resources location="/common/" mapping="/common/**" />
